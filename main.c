@@ -78,6 +78,7 @@ int main() {
     //       Transfer execution to EXIT below.
     //   Close the socket.
     for (int i = 1024; i <= 65535; i++) {
+        printf("%d, " i);
         serv_addr.sin_port = htons(i);
         client_socket = create_socket(&tv);
 

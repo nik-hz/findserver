@@ -30,8 +30,8 @@ int create_socket(struct timeval *tv) {
     // "Error: Cannot set socket options. %s.\n", where %s is strerror of errno
     // and return -1.
     // Hint: Look up SO_RCVTIMEO.
-    if (setsockopt(client_socket, SOL_SOCKET, SO_RCVTIMEO,
-                   (struct timeval *)&tv, sizeof(tv)) == -1) {
+    if (setsockopt(client_socket, SOL_SOCKET, SO_RCVTIMEO, (const char *)tv,
+                   sizeof(struct timeval)) == -1) {
         fprintf(stderr, "Error: Cannot set socket options. %s.\n",
                 strerror(errno));
         return -1;
@@ -80,6 +80,7 @@ int main() {
     for (int i = 1024; i <= 65535; i++) {
         serv_addr.sin_port = htons(i);
         client_socket = create_socket(&tv);
+
         if (connect(client_socket, (struct sockaddr *)&serv_addr, addrlen) <
             0) {
             fprintf(stderr, "Error: Failed to connect to server. %s.\n",

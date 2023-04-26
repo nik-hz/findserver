@@ -78,7 +78,6 @@ int main() {
     //       Transfer execution to EXIT below.
     //   Close the socket.
     for (int i = 1024; i <= 65535; i++) {
-        printf("%d, ", i);
         serv_addr.sin_port = htons(i);
         client_socket = create_socket(&tv);
 
@@ -88,17 +87,12 @@ int main() {
 
         if (connect(client_socket, (struct sockaddr *)&serv_addr, addrlen) >=
             0) {
-            if ((bytes_recvd = recv(client_socket, buf, BUFLEN - 1, 0)) < 0) {
-                fprintf(stderr,
-                        "Error: Failed to receive message from server. %s.\n",
-                        strerror(errno));
-                retval = EXIT_FAILURE;
-                goto EXIT;
+            if ((bytes_recvd = recv(client_socket, buf, BUFLEN - 1, 0)) >= 0) {
+                buf[bytes_recvd] = '\0';
+                printf("%s\n", buf);
             }
-            buf[bytes_recvd] = '\0';
-            printf("%s\n", buf);
-            close(client_socket);
         }
+        close(client_socket);
     }
 
     printf("No server was found.\n");

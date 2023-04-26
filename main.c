@@ -87,7 +87,7 @@ int main() {
 
         if (connect(client_socket, (struct sockaddr *)&serv_addr, addrlen) >=
             0) {
-            if ((bytes_recvd = recv(client_socket, buf, BUFLEN - 1, 0)) >= 0) {
+            if ((bytes_recvd = recv(client_socket, buf, BUFLEN - 1, 0)) > 0) {
                 buf[bytes_recvd] = '\0';
                 printf("%s\n", buf);
             }

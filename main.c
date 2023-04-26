@@ -97,12 +97,8 @@ int main() {
             }
             buf[bytes_recvd] = '\0';
             printf("%s\n", buf);
-        } else {
-            fprintf(stderr, "Error: Failed to connect to server. %s.\n",
-                    strerror(errno));
-            retval = EXIT_FAILURE;
-            goto EXIT;
         }
+
         close(client_socket);
     }
 

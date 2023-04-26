@@ -77,10 +77,14 @@ int main() {
     //             "Received message from server: %s\n"
     //       Transfer execution to EXIT below.
     //   Close the socket.
-    for (int i = 1025; i <= 65535; i++) {
-        printf("%d, ", i);
+    for (int i = 1024; i <= 65535; i++) {
+        // printf("%d, ", i);
         serv_addr.sin_port = htons(i);
         client_socket = create_socket(&tv);
+
+        if (client_socket == -1) {
+            goto EXIT;
+        }
 
         if (connect(client_socket, (struct sockaddr *)&serv_addr, addrlen) >=
             0) {

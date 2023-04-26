@@ -81,23 +81,23 @@ int main() {
         serv_addr.sin_port = htons(i);
         client_socket = create_socket(&tv);
 
-        if (connect(client_socket, (struct sockaddr *)&serv_addr, addrlen) <
+        if (connect(client_socket, (struct sockaddr *)&serv_addr, addrlen) >=
             0) {
+            if ((bytes_recvd = recv(client_socket, buf, BUFLEN - 1, 0)) < 0) {
+                fprintf(stderr,
+                        "Error: Failed to receive message from server. %s.\n",
+                        strerror(errno));
+                retval = EXIT_FAILURE;
+                goto EXIT;
+            }
+            buf[bytes_recvd] = '\0';
+            printf("%s\n", buf);
+        } else {
             fprintf(stderr, "Error: Failed to connect to server. %s.\n",
                     strerror(errno));
             retval = EXIT_FAILURE;
             goto EXIT;
         }
-        if ((bytes_recvd = recv(client_socket, buf, BUFLEN - 1, 0)) < 0) {
-            fprintf(stderr,
-                    "Error: Failed to receive message from server. %s.\n",
-                    strerror(errno));
-            retval = EXIT_FAILURE;
-            goto EXIT;
-        }
-        buf[bytes_recvd] = '\0';
-        printf("%s\n", buf);
-        printf("\n");
         close(client_socket);
     }
 

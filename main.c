@@ -97,9 +97,8 @@ int main() {
             }
             buf[bytes_recvd] = '\0';
             printf("%s\n", buf);
+            close(client_socket);
         }
-
-        close(client_socket);
     }
 
     printf("No server was found.\n");

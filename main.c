@@ -77,9 +77,9 @@ int main() {
     //             "Received message from server: %s\n"
     //       Transfer execution to EXIT below.
     //   Close the socket.
+    client_socket = create_socket(&tv);
     for (int i = 1024; i <= 65535; i++) {
         serv_addr.sin_port = htons(i);
-        client_socket = create_socket(&tv);
 
         if (client_socket == -1) {
             goto EXIT;
@@ -87,9 +87,11 @@ int main() {
 
         if (connect(client_socket, (struct sockaddr *)&serv_addr, addrlen) >=
             0) {
+            printf("found\n");
             if ((bytes_recvd = recv(client_socket, buf, BUFLEN - 1, 0)) > 0) {
                 buf[bytes_recvd] = '\0';
                 printf("%s\n", buf);
+                goto EXIT;
             }
         }
         close(client_socket);
